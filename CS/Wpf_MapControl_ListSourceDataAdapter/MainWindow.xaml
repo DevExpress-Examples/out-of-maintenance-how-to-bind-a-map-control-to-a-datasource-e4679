@@ -1,0 +1,58 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxm="http://schemas.devexpress.com/winfx/2008/xaml/map" x:Class="Wpf_MapControl_ListSourceDataAdapter.MainWindow"
+        Title="MainWindow" Height="350" Width="525">
+
+    <Window.Resources>
+        <XmlDataProvider x:Key="data" Source="Data/Ships.xml" XPath="/Ships"/>
+        <DataTemplate x:Key="itemTemplate">
+            <Image Width="40" Height="40" Source="Images/Ship.png">
+                <Image.RenderTransform>
+                    <TranslateTransform X="-20" Y="-20"/>
+                </Image.RenderTransform>
+            </Image>
+        </DataTemplate>
+        <DataTemplate x:Key="toolTipTemplate">
+            <StackPanel Margin="12" Orientation="Vertical" MaxWidth="250">
+                <StackPanel Margin="0,12,12,12" Orientation="Horizontal" MaxWidth="250">
+                    <TextBlock Text="{Binding Item.Name}" Foreground="White" FontSize="16"/>
+                    <TextBlock Text=" (" Foreground="White" FontSize="16"/>
+                    <TextBlock Text="{Binding Item.Year}" Foreground="White" FontSize="16"/>
+                    <TextBlock Text=")" Foreground="White" FontSize="16"/>
+                </StackPanel>
+                <TextBlock Text="{Binding Item.Description}" Foreground="LightGray" FontSize="12" TextWrapping="Wrap"/>
+            </StackPanel>
+        </DataTemplate>
+
+    </Window.Resources>
+
+    <Grid>
+        <dxm:MapControl ZoomLevel="5" CenterPoint="-37, 145">
+            <dxm:ImageTilesLayer>
+                <dxm:ImageTilesLayer.DataProvider>
+                    <dxm:BingMapDataProvider BingKey="YOUR BING KEY HERE"/>
+                </dxm:ImageTilesLayer.DataProvider>
+            </dxm:ImageTilesLayer>
+            <dxm:VectorLayer ToolTipEnabled="True" ToolTipContentTemplate="{Binding Source={StaticResource toolTipTemplate}}">
+                <!--region #DataAdapter-->
+                <dxm:VectorLayer.Data>
+                    <dxm:ListSourceDataAdapter DataSource="{Binding Source={StaticResource data}, XPath=Ship}">
+                        <dxm:ListSourceDataAdapter.AttributeMappings>
+                            <dxm:MapItemAttributeMapping Name="Name" Member="Name"/>
+                            <dxm:MapItemAttributeMapping Name="Year" Member="Year"/>
+                            <dxm:MapItemAttributeMapping Name="Description" Member="Description"/>
+                        </dxm:ListSourceDataAdapter.AttributeMappings>
+                        <dxm:ListSourceDataAdapter.Mappings>
+                            <dxm:MapItemMappingInfo Latitude="Latitude" Longitude="Longitude"/>
+                        </dxm:ListSourceDataAdapter.Mappings>
+                        <dxm:ListSourceDataAdapter.ItemSettings>
+                            <dxm:MapCustomElementSettings ContentTemplate="{Binding Source={StaticResource itemTemplate}}"/>
+                        </dxm:ListSourceDataAdapter.ItemSettings>
+                    </dxm:ListSourceDataAdapter>
+                </dxm:VectorLayer.Data>
+                <!--endregion #DataAdapter-->
+            </dxm:VectorLayer>
+        </dxm:MapControl>
+    </Grid>
+</Window>
