@@ -1,3 +1,8 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [MainWindow.xaml](./CS/Wpf_MapControl_ListSourceDataAdapter/MainWindow.xaml) (VB: [MainWindow.xaml](./VB/Wpf_MapControl_ListSourceDataAdapter/MainWindow.xaml))
+<!-- default file list end -->
 # How to bind a Map control to a datasource
 
 
